@@ -20,9 +20,4 @@ fn main() {
 
     // Print the sum of the top three
     println!("SUM: {}", elf_totals[0] + elf_totals[1] + elf_totals[2]);
-
-    println!(
-        "Even better way {:?}",
-        elf_totals.iter().take(3).sum::<u32>()
-    )
 }
