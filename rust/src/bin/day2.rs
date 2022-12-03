@@ -1,23 +1,33 @@
 fn main() {
     let input = include_str!("./input.txt");
+    let mut total: u32 = 0;
 
-    let lines = input.split("\n\n");
+    // Iterate through every 3 lines with access to all three lines
+    for line_group in input.lines().collect::<Vec<&str>>().chunks(3) {
+        // Find the letter that appears in all 3 lines
+        let mut common_letters = line_group[0].chars().collect::<Vec<char>>();
+        for line in line_group {
+            common_letters = common_letters
+                .iter()
+                .filter(|&c| line.contains(*c))
+                .map(|&c| c)
+                .collect();
+        }
 
-    let mut elf_totals: Vec<u32> = lines
-        .map(|line| {
-            line.split("\n")
-                .flat_map(|num| num.parse::<u32>())
-                .sum::<u32>()
-        })
-        .collect();
+        // if there is no common letter, skip this line line_group
+        if common_letters.len() == 0 {
+            continue;
+        }
 
-    elf_totals.sort_by(|a, b| b.cmp(a));
-
-    // Print the top three
-    for i in 0..3 {
-        println!("{}", elf_totals[i]);
+        // If there is a common letter, add it to the Total
+        let letter = common_letters[0];
+        if letter.is_lowercase() {
+            let number = letter as u8 - 96;
+            total += u32::from(number);
+        } else {
+            let number = letter as u8 - 38;
+            total += u32::from(number);
+        }
     }
-
-    // Print the sum of the top three
-    println!("SUM: {}", elf_totals[0] + elf_totals[1] + elf_totals[2]);
+    println!("Total: {}", total);
 }
